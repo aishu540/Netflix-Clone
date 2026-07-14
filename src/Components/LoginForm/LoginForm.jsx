@@ -1,14 +1,45 @@
-import React from 'react'
+import { Button, Form, Input } from "antd";
+import axios from "axios";
+import React, { useState } from "react";
 
-const LoginForm = () => {
+const PracticeForm = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const addStudent = async () => {
+    try {
+     
+        const students = await axios.post(
+        "https://jsonplaceholder.typicode.com/users",
+        {
+          name: name,
+          email: email,
+        },
+      );
+     console.log(students.data)
+    } catch (error) {
+        console.log(error.message)
+    }
+  };
+
   return (
     <div>
-        <form>
+      <Form onFinish={addStudent}>
+        <Form.Item label="Name" type="text">
+          <Input placeholder="Please enter your name" onChange={(e)=>setName(e.target.value)} />
+        </Form.Item>
 
-            <input type="text" placeholder='Enter your name'/>
-        </form>
+        <Form.Item label="Email" type="email">
+          <Input placeholder="Please enter your email" onChange={(e)=>setEmail(e.target.value)} />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default PracticeForm;
