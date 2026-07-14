@@ -5,7 +5,7 @@ import React, { useState } from "react";
 const PracticeForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-
+// the form is created
   const addStudent = async () => {
     try {
      
