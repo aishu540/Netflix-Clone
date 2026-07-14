@@ -2,7 +2,7 @@ import { Button, Form, Input } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 
-const PracticeForm = () => {
+const LoginForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 // the form is created
@@ -42,4 +42,4 @@ const PracticeForm = () => {
   );
 };
 
-export default PracticeForm;
+export default LoginForm;
