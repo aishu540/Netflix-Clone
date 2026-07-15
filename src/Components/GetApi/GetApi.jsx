@@ -13,11 +13,7 @@ const GetApi = () => {
                
             // )
             const response = await axios.get(
-  "https://dummyjson.com/users/search",{
-         params:{
-             q:value
-            },
-  }
+  `https://dummyjson.com/users/search?q=${value}`
   // "https://dummyjson.com/users"
 );
         setStudent(response.data.users)   
