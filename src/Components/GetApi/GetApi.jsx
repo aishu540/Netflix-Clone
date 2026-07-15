@@ -13,11 +13,21 @@ const GetApi = () => {
                
             // )
             const response = await axios.get(
-  `https://dummyjson.com/users/search?q=${value}`
+  "https://dummyjson.com/users/search",{
+         params:{
+             q:value
+            },
+  }
+  // "https://dummyjson.com/users"
 );
-          
+        setStudent(response.data.users)   
             // console.log(response.data)
-            setStudent(response.data.users)
+          // const  allStudents=response.data.users;
+          //   const filteredStudent=allStudents.filter((student)=>(
+          //     student.address.city.toLowerCase().includes(value.toLowerCase())
+          //   ))
+
+          //   setStudent(filteredStudent)
           }
           catch(error){
             console.log(error.message)
@@ -34,11 +44,11 @@ const GetApi = () => {
               student && (
                 student.map((student)=>(
                 
-                    <div>
+                    <div key={student.id}>
                     
                     <p><b>Name</b>:{student.firstName}</p>
                     <p><b>Id</b>:{student.id}</p>
-                    <p><b>City</b>:{student.city}</p>
+                    <p><b>City</b>:{student.address.city}</p>
                    </div>
                 ))
               )      
