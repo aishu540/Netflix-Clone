@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import './App.css'
 import LoginForm from './Components/LoginForm/LoginForm'
+import GetApi from './Components/GetApi/GetApi'
 
 function App() {
  
@@ -11,7 +12,8 @@ function App() {
      
      <div>
       
-      <LoginForm/>
+      {/* <LoginForm/> */}
+      <GetApi/>
       </div> 
     </>
   )
