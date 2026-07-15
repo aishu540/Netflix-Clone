@@ -3,6 +3,7 @@ import { useState } from 'react'
 import './App.css'
 import LoginForm from './Components/LoginForm/LoginForm'
 import GetApi from './Components/GetApi/GetApi'
+import PutApi from './Components/PutApi/PutApi'
 
 function App() {
  
@@ -13,7 +14,8 @@ function App() {
      <div>
       
       {/* <LoginForm/> */}
-      <GetApi/>
+      {/* <GetApi/> */}
+      <PutApi/>
       </div> 
     </>
   )
