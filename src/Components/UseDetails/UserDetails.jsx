@@ -1,4 +1,4 @@
-import { Button, Form, Input, Table } from "antd";
+import { Button, Form, Input, Popconfirm, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
@@ -40,6 +40,20 @@ const UserDetails = () => {
       setStudents([...students, response.data]);
     }
   };
+
+ const handleDelete=async(id)=>{
+   try{ const response=await axios.delete(`https://dummyjson.com/users/${id}`) 
+    setStudents((prevStudents)=>
+    
+    prevStudents.filter((student)=>(
+      student.id!==id
+    ))
+    )
+  }
+  catch(error){
+    console.log(error.message)
+  }
+ }
   const fetchStudents = async () => {
     try {
       const response = await axios.get("https://dummyjson.com/users");
@@ -77,7 +91,16 @@ const UserDetails = () => {
           >
             Edit
           </Button>
+          <Popconfirm
+           
+           title="Delete Student"
+             description="Are you sure you want to delete this student"
+             okText="Yes"
+             cancelText="No"
+             onConfirm={()=>handleDelete(record.id)}
+          >
           <Button>Delete</Button>
+          </Popconfirm>
         </>
       ),
     },
@@ -100,7 +123,7 @@ const UserDetails = () => {
           </Button>
         </Form.Item>
       </Form>
-      <Table columns={columns} dataSource={students} rowKey="id" />
+      <Table columns={columns} dataSource={students} rowKey="id" pagination={{pageSize:4}} />
     </div>
   );
 };
