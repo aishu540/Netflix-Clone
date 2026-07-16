@@ -5,9 +5,9 @@ import React, { useEffect, useState } from "react";
 const UserDetails = () => {
   const [students, setStudents] = useState([]);
   const [studentId, setStudentId] = useState(null);
-
+  const [loading,setLoading]=useState(false)
   const [form] = Form.useForm();
-
+  const [search,setSearch]=useState("")
   function handleEdit(record) {
     setStudentId(record.id);
     form.setFieldsValue({
@@ -17,8 +17,9 @@ const UserDetails = () => {
   }
 
   const handleSubmit = async (values) => {
+
     if (studentId) {
-      const response = await axios.put(
+    try{  const response = await axios.put(
         `https://dummyjson.com/users/${studentId}`,
         values
       );
@@ -30,20 +31,30 @@ const UserDetails = () => {
       form.resetFields()
 
       setStudentId(null)
+    }
+    catch(error){
+      console.log(error.message)
+    }
 
     } else {
-      const response = await axios.post(
+     try{ const response = await axios.post(
         "https://dummyjson.com/users/add",
 
         values,
       );
       setStudents([...students, response.data]);
     }
+    catch(error){
+      console.log(error.message)
+    }
+  }
   };
 
  const handleDelete=async(id)=>{
+  setLoading(true)
    try{ const response=await axios.delete(`https://dummyjson.com/users/${id}`) 
-    setStudents((prevStudents)=>
+    
+   setStudents((prevStudents)=>
     
     prevStudents.filter((student)=>(
       student.id!==id
@@ -52,6 +63,9 @@ const UserDetails = () => {
   }
   catch(error){
     console.log(error.message)
+  }
+  finally{
+    setLoading(false)
   }
  }
   const fetchStudents = async () => {
@@ -65,6 +79,9 @@ const UserDetails = () => {
   useEffect(() => {
     fetchStudents();
   }, []);
+  const filteredStudents=students.filter((student)=>(
+    student.firstName.toLowerCase().includes(search.toLowerCase())
+  ))
 
   const columns = [
     {
@@ -123,7 +140,8 @@ const UserDetails = () => {
           </Button>
         </Form.Item>
       </Form>
-      <Table columns={columns} dataSource={students} rowKey="id" pagination={{pageSize:4}} />
+      <Input.Search enterButton="Search"  onSearch={(value)=>setSearch(value)}/>
+      <Table columns={columns} dataSource={filteredStudents} loading={loading} rowKey="id" pagination={{pageSize:4}} />
     </div>
   );
 };
