@@ -4,16 +4,41 @@ import React, { useEffect, useState } from "react";
 
 const UserDetails = () => {
   const [students, setStudents] = useState([]);
+  const [studentId, setStudentId] = useState(null);
 
   const [form] = Form.useForm();
-  const handleAdd = async (values) => {
-    const response = await axios.post(
-     
+
+  function handleEdit(record) {
+    setStudentId(record.id);
+    form.setFieldsValue({
+      firstName: record.firstName,
+      email: record.email,
+    });
+  }
+
+  const handleSubmit = async (values) => {
+    if (studentId) {
+      const response = await axios.put(
+        `https://dummyjson.com/users/${studentId}`,
+        values
+      );
+      setStudents((prevStudents)=>
+        prevStudents.map(
+          (student) =>( student.id === studentId ? response.data : student),
+        ),
+      );
+      form.resetFields()
+
+      setStudentId(null)
+
+    } else {
+      const response = await axios.post(
         "https://dummyjson.com/users/add",
 
-      values,
-    );
-    setStudents([...students,response.data])
+        values,
+      );
+      setStudents([...students, response.data]);
+    }
   };
   const fetchStudents = async () => {
     try {
@@ -26,6 +51,7 @@ const UserDetails = () => {
   useEffect(() => {
     fetchStudents();
   }, []);
+
   const columns = [
     {
       title: "ID",
@@ -40,12 +66,26 @@ const UserDetails = () => {
       title: "Email",
       dataIndex: "email",
     },
+    {
+      title: "Actions",
+      render: (_, record) => (
+        <>
+          <Button
+            onClick={() => {
+              handleEdit(record);
+            }}
+          >
+            Edit
+          </Button>
+          <Button>Delete</Button>
+        </>
+      ),
+    },
   ];
   return (
     <div>
-      <Form form={form} layout="vertical" onFinish={handleAdd}>
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item label="Name" name="firstName">
-         
           <Input placeholder="Please Enter your name" />
         </Form.Item>
 
@@ -54,8 +94,9 @@ const UserDetails = () => {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-          
-            Add Student
+            {
+              studentId ? "Update":"Add"
+            }
           </Button>
         </Form.Item>
       </Form>
