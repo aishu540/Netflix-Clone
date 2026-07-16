@@ -4,6 +4,8 @@ import './App.css'
 import LoginForm from './Components/LoginForm/LoginForm'
 import GetApi from './Components/GetApi/GetApi'
 import PutApi from './Components/PutApi/PutApi'
+import DeleteApi from './Components/DeleteApi/DeleteApi'
+import UserDetails from './Components/UseDetails/UserDetails'
 
 function App() {
  
@@ -15,7 +17,9 @@ function App() {
       
       {/* <LoginForm/> */}
       {/* <GetApi/> */}
-      <PutApi/>
+      {/* <PutApi/> */}
+      {/* <DeleteApi/> */}
+      <UserDetails/>
       </div> 
     </>
   )
