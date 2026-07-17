@@ -134,10 +134,14 @@ const UserDetails = () => {
    
    <>
           <Button
-            onClick={() => {
+           
+           
+           onClick={() => {
               handleEdit(record);
             }}
+            disabled={loading}
          
+            type="primary"
          >
             Edit
           </Button>
@@ -148,7 +152,7 @@ const UserDetails = () => {
             cancelText="No"
             onConfirm={() => handleDelete(record.id)}
           >
-            <Button>Delete</Button>
+            <Button type="primary" danger disabled={loading}>Delete</Button>
           </Popconfirm>
         </>
       ),
@@ -157,7 +161,10 @@ const UserDetails = () => {
   return (
     <div>
      
-     <Button type="primary" onClick={()=>{
+     <Button type="primary" 
+     
+     disabled={loading}
+     onClick={()=>{
       form.resetFields()
       setOpen(true)
       setStudentId(null)
