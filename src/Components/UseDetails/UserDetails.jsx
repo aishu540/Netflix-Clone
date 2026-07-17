@@ -1,6 +1,7 @@
 import { Button, Form, Input, message, Popconfirm, Table,Modal } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserDetails = () => {
   const [students, setStudents] = useState([]);
@@ -10,6 +11,8 @@ const UserDetails = () => {
   const [search, setSearch] = useState("");
 
   const [open,setOpen]=useState(false)
+
+  const navigate=useNavigate()
  const [submitLoading,setSubmitLoading]=useState(false)
   function handleEdit(record) {
     setStudentId(record.id);
@@ -132,7 +135,11 @@ const UserDetails = () => {
    
       render: (_, record) => (
    
+   
    <>
+        <Button
+          onClick={()=>navigate(`/students/${record.id}`)}
+        >View</Button>
           <Button
            
            

@@ -22,7 +22,7 @@ function App() {
       {/* <PutApi/> */}
       {/* <DeleteApi/> */}
       <Routes>
-        <Route path="/students/:id" element={<StudentDetails/>}/>
+        <Route path="/students/:id" element={<StudentDetails />}/>
       </Routes>
       <UserDetails/>
       </div> 
