@@ -10,7 +10,7 @@ const UserDetails = () => {
   const [search, setSearch] = useState("");
 
   const [open,setOpen]=useState(false)
- 
+ const [submitLoading,setSubmitLoading]=useState(false)
   function handleEdit(record) {
     setStudentId(record.id);
     form.setFieldsValue({
@@ -23,6 +23,7 @@ const UserDetails = () => {
   const handleSubmit = async (values) => {
     if (studentId) {
       try {
+        setSubmitLoading(true)
         const response = await axios.put(
           `https://dummyjson.com/users/${studentId}`,
           values,
@@ -43,19 +44,27 @@ const UserDetails = () => {
         console.log(error.message);
     
       }
+      finally{
+        setSubmitLoading(false)
+      }
     } else {
       try {
+        setSubmitLoading(true)
         const response = await axios.post(
           "https://dummyjson.com/users/add",
 
           values,
         );
+        
        
         setStudents([...students, response.data]);
         message.success("A new student added successfully")
         setOpen(false)
       } catch (error) {
         message.error("unable to add a student")
+      }
+      finally{
+        setSubmitLoading(false)
       }
     }
   };
@@ -77,11 +86,15 @@ const UserDetails = () => {
   };
   const fetchStudents = async () => {
     try {
+      setLoading(true)
       const response = await axios.get("https://dummyjson.com/users");
       setStudents(response.data.users);
   
     } catch (error) {
       console.log(error.message);
+    }
+    finally{
+      setLoading(false)
     }
   };
   useEffect(() => {
@@ -144,7 +157,11 @@ const UserDetails = () => {
   return (
     <div>
      
-     <Button type="primary" onClick={()=>setOpen(true)}>{studentId ? "Update Student":"Add Student"}</Button>
+     <Button type="primary" onClick={()=>{
+      form.resetFields()
+      setOpen(true)
+      setStudentId(null)
+      }}>Add Student</Button>
      <Modal
      
      
@@ -161,6 +178,7 @@ const UserDetails = () => {
      >
      
      
+     
       <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item label="Name" name="firstName">
           <Input placeholder="Please Enter your name" />
@@ -170,7 +188,9 @@ const UserDetails = () => {
           <Input placeholder="Please enter your Email" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+         
+         
+          <Button type="primary" htmlType="submit" loading={submitLoading} disabled={submitLoading}>
             {studentId ? "Update" : "Add"}
           </Button>
         </Form.Item>
