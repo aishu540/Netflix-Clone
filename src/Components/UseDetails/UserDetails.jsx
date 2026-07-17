@@ -5,9 +5,9 @@ import React, { useEffect, useState } from "react";
 const UserDetails = () => {
   const [students, setStudents] = useState([]);
   const [studentId, setStudentId] = useState(null);
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [search,setSearch]=useState("")
+  const [search, setSearch] = useState("");
   function handleEdit(record) {
     setStudentId(record.id);
     form.setFieldsValue({
@@ -17,57 +17,51 @@ const UserDetails = () => {
   }
 
   const handleSubmit = async (values) => {
-
     if (studentId) {
-    try{  const response = await axios.put(
-        `https://dummyjson.com/users/${studentId}`,
-        values
-      );
-      setStudents((prevStudents)=>
-        prevStudents.map(
-          (student) =>( student.id === studentId ? response.data : student),
-        ),
-      );
-      form.resetFields()
+      try {
+        const response = await axios.put(
+          `https://dummyjson.com/users/${studentId}`,
+          values,
+        );
+        setStudents((prevStudents) =>
+          prevStudents.map((student) =>
+            student.id === studentId ? response.data : student,
+          ),
+        );
+        form.resetFields();
 
-      setStudentId(null)
-    }
-    catch(error){
-      console.log(error.message)
-    }
-
+        setStudentId(null);
+      } catch (error) {
+        console.log(error.message);
+      }
     } else {
-     try{ const response = await axios.post(
-        "https://dummyjson.com/users/add",
+      try {
+        const response = await axios.post(
+          "https://dummyjson.com/users/add",
 
-        values,
-      );
-      setStudents([...students, response.data]);
+          values,
+        );
+        setStudents([...students, response.data]);
+      } catch (error) {
+        console.log(error.message);
+      }
     }
-    catch(error){
-      console.log(error.message)
-    }
-  }
   };
 
- const handleDelete=async(id)=>{
-  setLoading(true)
-   try{ const response=await axios.delete(`https://dummyjson.com/users/${id}`) 
-    
-   setStudents((prevStudents)=>
-    
-    prevStudents.filter((student)=>(
-      student.id!==id
-    ))
-    )
-  }
-  catch(error){
-    console.log(error.message)
-  }
-  finally{
-    setLoading(false)
-  }
- }
+  const handleDelete = async (id) => {
+    setLoading(true);
+    try {
+      const response = await axios.delete(`https://dummyjson.com/users/${id}`);
+
+      setStudents((prevStudents) =>
+        prevStudents.filter((student) => student.id !== id),
+      );
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   const fetchStudents = async () => {
     try {
       const response = await axios.get("https://dummyjson.com/users");
@@ -77,25 +71,31 @@ const UserDetails = () => {
     }
   };
   useEffect(() => {
+  
     fetchStudents();
   }, []);
-  const filteredStudents=students.filter((student)=>(
-    student.firstName.toLowerCase().includes(search.toLowerCase())
-  ))
+  const filteredStudents = students.filter((student) =>(
+    student.firstName.toLowerCase().includes(search.toLowerCase())||
+     student.id.toString()===search||
+     student.email.toLowerCase().includes(search.toLowerCase())
+  ));
 
   const columns = [
     {
       title: "ID",
       dataIndex: "id",
+      sorter:(a,b)=>a.id-b.id
     },
     {
       title: "Name",
 
       dataIndex: "firstName",
+      sorter:(a,b)=>a.firstName.localCompare(b.firstName)
     },
     {
       title: "Email",
       dataIndex: "email",
+       sorter:(a,b)=>a.email.localCompare(b.email)
     },
     {
       title: "Actions",
@@ -109,14 +109,13 @@ const UserDetails = () => {
             Edit
           </Button>
           <Popconfirm
-           
-           title="Delete Student"
-             description="Are you sure you want to delete this student"
-             okText="Yes"
-             cancelText="No"
-             onConfirm={()=>handleDelete(record.id)}
+            title="Delete Student"
+            description="Are you sure you want to delete this student"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => handleDelete(record.id)}
           >
-          <Button>Delete</Button>
+            <Button>Delete</Button>
           </Popconfirm>
         </>
       ),
@@ -134,14 +133,25 @@ const UserDetails = () => {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            {
-              studentId ? "Update":"Add"
-            }
+            {studentId ? "Update" : "Add"}
           </Button>
         </Form.Item>
       </Form>
-      <Input.Search enterButton="Search"  onSearch={(value)=>setSearch(value)}/>
-      <Table columns={columns} dataSource={filteredStudents} loading={loading} rowKey="id" pagination={{pageSize:4}} />
+      <Input.Search
+        enterButton="Search"
+        value={search}
+
+
+        onChange={(e)=>setSearch(e.target.value)}
+        onSearch={(value) => setSearch(value)}
+      />
+      <Table
+        columns={columns}
+        dataSource={filteredStudents}
+        loading={loading}
+        rowKey="id"
+        pagination={{ pageSize: 4 }}
+      />
     </div>
   );
 };
