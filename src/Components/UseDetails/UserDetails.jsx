@@ -1,4 +1,4 @@
-import { Button, Form, Input, Popconfirm, Table } from "antd";
+import { Button, Form, Input, message, Popconfirm, Table,Modal } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
@@ -8,12 +8,16 @@ const UserDetails = () => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const [search, setSearch] = useState("");
+
+  const [open,setOpen]=useState(false)
+ 
   function handleEdit(record) {
     setStudentId(record.id);
     form.setFieldsValue({
       firstName: record.firstName,
       email: record.email,
     });
+    setOpen(true)
   }
 
   const handleSubmit = async (values) => {
@@ -25,14 +29,19 @@ const UserDetails = () => {
         );
         setStudents((prevStudents) =>
           prevStudents.map((student) =>
+         
             student.id === studentId ? response.data : student,
           ),
         );
         form.resetFields();
 
         setStudentId(null);
+        message.success("the student updated successfully")
+        setOpen(false)
+        
       } catch (error) {
         console.log(error.message);
+    
       }
     } else {
       try {
@@ -41,14 +50,18 @@ const UserDetails = () => {
 
           values,
         );
+       
         setStudents([...students, response.data]);
+        message.success("A new student added successfully")
+        setOpen(false)
       } catch (error) {
-        console.log(error.message);
+        message.error("unable to add a student")
       }
     }
   };
 
   const handleDelete = async (id) => {
+  
     setLoading(true);
     try {
       const response = await axios.delete(`https://dummyjson.com/users/${id}`);
@@ -66,6 +79,7 @@ const UserDetails = () => {
     try {
       const response = await axios.get("https://dummyjson.com/users");
       setStudents(response.data.users);
+  
     } catch (error) {
       console.log(error.message);
     }
@@ -74,6 +88,7 @@ const UserDetails = () => {
   
     fetchStudents();
   }, []);
+
   const filteredStudents = students.filter((student) =>(
     student.firstName.toLowerCase().includes(search.toLowerCase())||
      student.id.toString()===search||
@@ -82,6 +97,7 @@ const UserDetails = () => {
 
   const columns = [
     {
+   
       title: "ID",
       dataIndex: "id",
       sorter:(a,b)=>a.id-b.id
@@ -90,22 +106,26 @@ const UserDetails = () => {
       title: "Name",
 
       dataIndex: "firstName",
-      sorter:(a,b)=>a.firstName.localCompare(b.firstName)
+      sorter:(a,b)=>a.firstName.localeCompare(b.firstName)
     },
     {
       title: "Email",
       dataIndex: "email",
-       sorter:(a,b)=>a.email.localCompare(b.email)
+       sorter:(a,b)=>a.email.localeCompare(b.email)
     },
     {
       title: "Actions",
+   
+   
       render: (_, record) => (
-        <>
+   
+   <>
           <Button
             onClick={() => {
               handleEdit(record);
             }}
-          >
+         
+         >
             Edit
           </Button>
           <Popconfirm
@@ -123,6 +143,24 @@ const UserDetails = () => {
   ];
   return (
     <div>
+     
+     <Button type="primary" onClick={()=>setOpen(true)}>{studentId ? "Update Student":"Add Student"}</Button>
+     <Modal
+     
+     
+     open={open}
+     footer={null}
+     title={studentId ? "Update Student":"Add Student"}
+     onCancel={()=>{
+    
+    
+      setOpen(false)
+      form.resetFields()
+      setStudentId(null)}
+    }
+     >
+     
+     
       <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item label="Name" name="firstName">
           <Input placeholder="Please Enter your name" />
@@ -137,8 +175,11 @@ const UserDetails = () => {
           </Button>
         </Form.Item>
       </Form>
+      </Modal>
       <Input.Search
         enterButton="Search"
+     
+     
         value={search}
 
 
@@ -146,14 +187,18 @@ const UserDetails = () => {
         onSearch={(value) => setSearch(value)}
       />
       <Table
-        columns={columns}
+      
+      
+      columns={columns}
         dataSource={filteredStudents}
         loading={loading}
         rowKey="id"
         pagination={{ pageSize: 4 }}
       />
     </div>
-  );
+ 
+
+);
 };
 
 export default UserDetails;
