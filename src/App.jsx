@@ -12,6 +12,8 @@ import StudentDetails from "./Pages/StudentDetails";
 import LoginPage from "./Components/LoginPage/LoginPage";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
+import Admin from "./Components/Admin/Admin";
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
           
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         
+              <Route path="/admin"  element={<RoleProtectedRoute  role="admin"><Admin /></RoleProtectedRoute>}/>
         </Routes>
       </div>
     </>

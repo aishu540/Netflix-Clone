@@ -11,13 +11,24 @@ const LoginPage = () => {
   const handleLogin = (values) => {
     console.log(values)
     if(
-        values.username==="aishwarya" &&
+        values.username==="user" &&
 
         values.password==="aishu123"
     ){
         localStorage.setItem("token", "abc54");
-        message.success("login Successful")
+        localStorage.setItem("role","user")
+        message.success(" user login Successful")
         navigate("/dashboard");
+    }
+    else if(
+        values.username==="admin" &&
+
+        values.password==="aishu123"
+    ){
+        localStorage.setItem("token", "abc54");
+        localStorage.setItem("role","admin")
+        message.success(" admin login Successful")
+        navigate("/admin");
     }
     else{
         message.error("Invalid userName or Password")
