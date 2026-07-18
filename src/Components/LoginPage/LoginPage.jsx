@@ -1,9 +1,13 @@
 import { Button, Form, Input, message } from "antd";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const token=localStorage.getItem("token")
+  if(token){
+   return <Navigate to="/dashboard"/>
+  }
   const handleLogin = (values) => {
     console.log(values)
     if(
