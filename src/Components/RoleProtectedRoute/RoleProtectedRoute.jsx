@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 const RoleProtectedRoute = ({children,role}) => {
-    const token= sessionStorage.getItem("token")
+    const token=localStorage.getItem("token")
     const userrole= sessionStorage.getItem("role")
     if(!token){
         return <Navigate to="/login"/>
