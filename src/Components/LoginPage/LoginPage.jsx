@@ -29,29 +29,8 @@ const LoginPage = () => {
     console.log(error.message)
   }
 
-    // if(
-    //     values.username==="user" &&
 
-    //     values.password==="aishu123"
-    // ){
-    //     localStorage.setItem("token", "abc54");
-    //     localStorage.setItem("role","user")
-    //     message.success(" user login Successful")
-    //     navigate("/dashboard");
-    // }
-    // else if(
-    //     values.username==="admin" &&
 
-    //     values.password==="aishu123"
-    // ){
-    //     localStorage.setItem("token", "abc54");
-    //     localStorage.setItem("role","admin")
-    //     message.success(" admin login Successful")
-    //     navigate("/admin");
-    // }
-    // else{
-    //     message.error("Invalid userName or Password")
-    // }
   
 };
 
