@@ -2,14 +2,16 @@ import { Button, Form, Input, message, Popconfirm, Table,Modal } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import api from "../../services/api";
 const UserDetails = () => {
   const [students, setStudents] = useState([]);
   const [studentId, setStudentId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  
   const [search, setSearch] = useState("");
 
+ 
   const [open,setOpen]=useState(false)
 
   const navigate=useNavigate()
@@ -28,7 +30,7 @@ const UserDetails = () => {
       try {
         setSubmitLoading(true)
         const response = await axios.put(
-          `https://dummyjson.com/users/${studentId}`,
+          `${import.meta.env.VITE_API_URL}/users/${studentId}`,
           values,
         );
         setStudents((prevStudents) =>
@@ -53,8 +55,8 @@ const UserDetails = () => {
     } else {
       try {
         setSubmitLoading(true)
-        const response = await axios.post(
-          "https://dummyjson.com/users/add",
+        const response = await api.post(
+          "/users/add",
 
           values,
         );

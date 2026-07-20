@@ -2,37 +2,56 @@ import { Button, Form, Input, message } from "antd";
 import React from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
+import axios from "axios";
+
 const LoginPage = () => {
   const navigate = useNavigate();
-  const token=localStorage.getItem("token")
+  const token= sessionStorage.getItem("token")
   if(token){
    return <Navigate to="/dashboard"/>
   }
-  const handleLogin = (values) => {
+ 
+  const handleLogin =async (values) => {
     console.log(values)
-    if(
-        values.username==="user" &&
-
-        values.password==="aishu123"
-    ){
-        localStorage.setItem("token", "abc54");
-        localStorage.setItem("role","user")
-        message.success(" user login Successful")
-        navigate("/dashboard");
-    }
-    else if(
-        values.username==="admin" &&
-
-        values.password==="aishu123"
-    ){
-        localStorage.setItem("token", "abc54");
-        localStorage.setItem("role","admin")
-        message.success(" admin login Successful")
-        navigate("/admin");
+  try{  const response=await axios.post("https://dummyjson.com/auth/login",values)
+    sessionStorage.setItem("token",response.data.accessToken)
+    
+    if(response.data.username==="emilys"){
+       sessionStorage.setItem("role","admin")
+      navigate("/admin")
     }
     else{
-        message.error("Invalid userName or Password")
+        sessionStorage.setItem("role","user")
+      navigate("/dashboard")
     }
+  }
+  catch(error){
+    console.log(error.message)
+  }
+
+    // if(
+    //     values.username==="user" &&
+
+    //     values.password==="aishu123"
+    // ){
+    //     localStorage.setItem("token", "abc54");
+    //     localStorage.setItem("role","user")
+    //     message.success(" user login Successful")
+    //     navigate("/dashboard");
+    // }
+    // else if(
+    //     values.username==="admin" &&
+
+    //     values.password==="aishu123"
+    // ){
+    //     localStorage.setItem("token", "abc54");
+    //     localStorage.setItem("role","admin")
+    //     message.success(" admin login Successful")
+    //     navigate("/admin");
+    // }
+    // else{
+    //     message.error("Invalid userName or Password")
+    // }
   
 };
 
