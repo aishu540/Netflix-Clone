@@ -14,13 +14,16 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
 import Admin from "./Components/Admin/Admin";
+import ErrorBoundary from "./services/erro";
 
 function App() {
   return (
     <>
       <div>
         {/* <LoginForm/> */}
-        {/* <GetApi/> */}
+        <ErrorBoundary>
+        <GetApi/>
+        </ErrorBoundary>
         {/* <PutApi/> */}
         {/* <DeleteApi/> */}
         <Routes>
