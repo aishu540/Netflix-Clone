@@ -18,6 +18,7 @@ import ErrorBoundary from "./services/erro";
 import User from "./Components/user";
 import Authentication from "./Components/Authontication/Authentication";
 import AdminDashboard from "./Components/AdminDashboard/AdminDashboard";
+import QueryParams from "./QueryParams/QueryParams";
 
 function App() {
   return (
@@ -61,6 +62,8 @@ function App() {
           <Route path="/authentication" element={<Authentication/>}  />
 
           <Route path="/admindashboard" element={<AdminDashboard/>}/>
+          <Route path="/queryparams" element={<QueryParams/>}/>
+        
         </Routes>
       </div>
     </>
