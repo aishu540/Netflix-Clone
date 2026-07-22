@@ -1,14 +1,25 @@
 import { Button } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { endpoint } from "../../services/endpoint";
+import api from "../../services/api";
 const Dashboard = () => {
     const navigate=useNavigate()
  
-    function handleLogout(){
-     localStorage.removeItem("token")
+  const handleLogout=async ()=>{
+  // try{    await api.post(endpoint.auth.logout)
+
+     
+      
+   
+  // }
+  // catch(error){
+  //   console.log(error.message)
+  // }
+  localStorage.removeItem("token")
+
      localStorage.removeItem("role")
-    navigate("/login")
+      navigate("/login")
     }
   return (
    

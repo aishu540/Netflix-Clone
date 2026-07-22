@@ -43,7 +43,7 @@ const GetApi = () => {
                     <div key={student.id}>
                     
                     <p><b>Name</b>:{student.firstName}</p>
-                    <p>Id</b>:{student.id}</p>
+                    <p><b>Id</b>:{student.id}</p>
                     <p><b>City</b>:{student.address.city}</p>
                    </div>
                 ))

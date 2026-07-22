@@ -15,15 +15,16 @@ import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import RoleProtectedRoute from "./Components/RoleProtectedRoute/RoleProtectedRoute";
 import Admin from "./Components/Admin/Admin";
 import ErrorBoundary from "./services/erro";
+import User from "./Components/user";
+import Authentication from "./Components/Authontication/Authentication";
+import AdminDashboard from "./Components/AdminDashboard/AdminDashboard";
 
 function App() {
   return (
     <>
       <div>
         {/* <LoginForm/> */}
-        <ErrorBoundary>
-        <GetApi/>
-        </ErrorBoundary>
+
         {/* <PutApi/> */}
         {/* <DeleteApi/> */}
         <Routes>
@@ -31,10 +32,35 @@ function App() {
 
           <Route path="/students/:id" element={<StudentDetails />} />
           <Route path="/login" element={<LoginPage />} />
-          
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        
-              <Route path="/admin"  element={<RoleProtectedRoute  role="admin"><Admin /></RoleProtectedRoute>}/>
+          <Route
+            path="/user"
+            element={
+              <ErrorBoundary>
+                <User />
+
+              </ErrorBoundary>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin"
+            element={
+              <RoleProtectedRoute role="admin">
+                <Admin />
+              </RoleProtectedRoute>
+            }
+          />
+          <Route path="/authentication" element={<Authentication/>}  />
+
+          <Route path="/admindashboard" element={<AdminDashboard/>}/>
         </Routes>
       </div>
     </>
